@@ -1,0 +1,114 @@
+﻿<IgbLegend Orientation="LegendOrientation.Horizontal"
+            Name="Legend" id="testLegend1"
+            @ref="legend">
+</IgbLegend>
+
+<IgbDataChart 
+    Width="700px" 
+    Height="700px" 
+    Name="chart"
+    @ref="chart">
+    <IgbCategoryYAxis DataSource="EnergyRenewableConsumption"
+                        IsInverted="true"
+                        Label="Location"
+                        Name="yAxis"
+                        @ref="yAxis">
+    </IgbCategoryYAxis>
+    <IgbNumericXAxis MinimumValue="0"
+                        Title="TWh"
+                        Name="xAxis"
+                        @ref="xAxis">
+    </IgbNumericXAxis>
+    <IgbStackedBarSeries XAxisName="xAxis"
+                            YAxisName="yAxis"
+                            DataSource="EnergyRenewableConsumption"
+                            AreaFillOpacity="1"
+                            ShowDefaultTooltip="true"
+                            Name="StackedBarSeries"
+                            @ref="stackedBarSeries">
+        <IgbStackedFragmentSeries Name="s1"
+                                    @ref="s1"
+                                    Title="@("Hydro")"
+                                    ValueMemberPath="Hydro">
+        </IgbStackedFragmentSeries>
+        <IgbStackedFragmentSeries Name="s2"
+                                    @ref="s2"
+                                    ValueMemberPath="Wind"
+                                    Title="@("Wind")">
+        </IgbStackedFragmentSeries>
+        <IgbStackedFragmentSeries Name="s3"
+                                    @ref="s3"
+                                    ValueMemberPath="Solar"
+                                    Title="@("Solar")">
+        </IgbStackedFragmentSeries>
+        <IgbStackedFragmentSeries Name="s4"
+                                    @ref="s4"
+                                    ValueMemberPath="Other"
+                                    Title="@("Other")">
+        </IgbStackedFragmentSeries>
+    </IgbStackedBarSeries>
+</IgbDataChart>
+
+
+<style>
+    #testLegend1 .ig-chart-legend-items-list {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content:flex-end;
+    }
+</style>
+@code {
+    protected override void OnInitialized()
+    {
+
+    }
+
+    private Action? BindElements { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        var legend = this.legend;
+        var chart = this.chart;
+        var yAxis = this.yAxis;
+        var xAxis = this.xAxis;
+        var stackedBarSeries = this.stackedBarSeries;
+        var s1 = this.s1;
+        var s2 = this.s2;
+        var s3 = this.s3;
+        var s4 = this.s4;
+
+        this.BindElements = () =>
+        {
+            if(chart != null)
+            {
+                chart.Legend = this.legend;
+            }
+
+            
+        };
+        this.BindElements();
+    }
+
+    private IgbLegend? legend;
+    private IgbDataChart? chart;
+    private IgbCategoryYAxis? yAxis;
+    private IgbNumericXAxis? xAxis;
+    private IgbStackedBarSeries? stackedBarSeries;
+    private IgbStackedFragmentSeries? s1;
+    private IgbStackedFragmentSeries? s2;
+    private IgbStackedFragmentSeries? s3;
+    private IgbStackedFragmentSeries? s4;
+
+    private EnergyRenewableConsumption? _energyRenewableConsumption = null;
+    public EnergyRenewableConsumption EnergyRenewableConsumption
+    {
+        get
+        {
+            if (_energyRenewableConsumption == null)
+            {
+                _energyRenewableConsumption = new EnergyRenewableConsumption();
+            }
+            return _energyRenewableConsumption;
+        }
+    }
+}
